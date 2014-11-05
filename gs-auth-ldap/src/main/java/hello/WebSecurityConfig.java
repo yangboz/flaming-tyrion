@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.configurers.ldap.LdapAuthenticationProviderConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.*;
-
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,15 +42,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 //			.ldif("classpath:test-server.ldif");
 			auth.ldapAuthentication()
 			.userSearchFilter("(uid={0})")
-			.userSearchBase("uid=admin,ou=system")
+			.userSearchBase("ou=users,ou=system")
 			.groupRoleAttribute("cn")
 			.groupSearchFilter("(member={0})")
 //			.userDnPatterns("uid={0},ou=people")
 //			.groupSearchBase("ou=groups")
 			.contextSource()
-			.url("ldaps://localhost:10389/uid=admin,ou=system")
-			.managerDn("uid=admin,ou=system")
+			.url("ldap://localhost:10389/dc=example,dc=com")
+			.managerDn("uid=admin,ou=groups")
 			.managerPassword("dirtysecret");
+			
+//			DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource();
+//		    contextSource.setUserDn("uid=admin,ou=system");
+//		    contextSource.setPassword("dirtysecret");
+//		    contextSource.afterPropertiesSet();
+//
+//		    DefaultLdapAuthoritiesPopulator defaultLdapAuthoritiesPopulator = new DefaultLdapAuthoritiesPopulator(contextSource, "ou=groups");
+//		    defaultLdapAuthoritiesPopulator.setGroupRoleAttribute("ou");
+//
+//		    LdapAuthenticationProviderConfigurer<AuthenticationManagerBuilder> ldapAuthenticationProviderConfigurer = auth.ldapAuthentication();
+//
+//		    ldapAuthenticationProviderConfigurer
+//		        .userSearchFilter(...)
+//		        .groupSearchBase(...)
+//		        .contextSource(contextSource)
+//		        .ldapAuthoritiesPopulator(defaultLdapAuthoritiesPopulator);
 		}
 	}
 }
