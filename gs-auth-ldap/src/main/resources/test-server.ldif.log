@@ -1,0 +1,9 @@
+#!RESULT ERROR
+#!CONNECTION ldap://localhost:10389
+#!DATE 2014-11-05T09:23:03.120
+#!ERROR [LDAP: error code 32 - NO_SUCH_OBJECT: failed for MessageType : ADD_REQUEST Message ID : 43     Add Request : Entry     dn[n]: ou=groups,dc=springframework,dc=org     objectclass: top     objectclass: organizationalUnit     ou: groups : ERR_268 Cannot find a partition for ou=groups,dc=springframework,dc=org]
+dn: ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
