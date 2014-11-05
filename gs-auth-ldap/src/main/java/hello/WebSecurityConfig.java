@@ -16,27 +16,39 @@ import org.slf4j.LoggerFactory;
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-	final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class); 
-	
-	//@see: http://raymondhlee.wordpress.com/tag/spring-boot/
-	@Value("${ldap.domain}")
-	private String DOMAIN;
-	@Value("${ldap.url}")
-	private String URL;
+	static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class); 
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		LOG.info("@Value(URL):{}",URL);
 		http.authorizeRequests().antMatchers("/css/**").permitAll().anyRequest().fullyAuthenticated().and().formLogin();
 	}
 	
 	@Configuration
 	public static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter{
+		
+		//@see: http://raymondhlee.wordpress.com/tag/spring-boot/
+		@Value("${ldap.domain}")
+		private String DOMAIN;
+		@Value("${ldap.url}")
+		private String URL;
+		
 		@Override 
 		public void init(AuthenticationManagerBuilder auth) throws Exception{
-			auth.ldapAuthentication().userDnPatterns("uid={0},ou=people")
-			.groupSearchBase("ou=groups").contextSource()
-			.ldif("classpath:test-server.ldif");
+			LOG.info("@Value(URL):{}",URL);
+//			auth.ldapAuthentication().userDnPatterns("uid={0},ou=people")
+//			.groupSearchBase("ou=groups").contextSource()
+//			.ldif("classpath:test-server.ldif");
+			auth.ldapAuthentication()
+			.userSearchFilter("(uid={0})")
+			.userSearchBase("uid=admin,ou=system")
+			.groupRoleAttribute("cn")
+			.groupSearchFilter("(member={0})")
+//			.userDnPatterns("uid={0},ou=people")
+//			.groupSearchBase("ou=groups")
+			.contextSource()
+			.url("ldaps://localhost:10389/uid=admin,ou=system")
+			.managerDn("uid=admin,ou=system")
+			.managerPassword("dirtysecret");
 		}
 	}
 }
