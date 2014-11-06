@@ -11,7 +11,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-  
+//@see:http://www.coderpanda.com/jndi-example-accessing-ldap-in-java/
 public class LDAPAuthentication {
     private final String URL = "ldap://127.0.0.1:10389/";
     private final String BASEDN = "dc=example,dc=com";  // 根据自己情况进行修改
@@ -31,13 +31,13 @@ public class LDAPAuthentication {
          
         try {
             ctx = new InitialLdapContext(env, connCtls);
-            System.out.println( "LDAP认证成功!" );  
+            System.out.println( "LDAP初始化成功!" );  
              
         } catch (javax.naming.AuthenticationException e) {
-            System.out.println("LDAP认证失败!");
+            System.out.println("LDAP初始化失败!");
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("LDAP认证出错!");
+            System.out.println("LDAP初始化出错!");
             e.printStackTrace();
         }
          
@@ -106,7 +106,7 @@ public class LDAPAuthentication {
     public static void main(String[] args) {
         LDAPAuthentication ldap = new LDAPAuthentication();
  
-        if(ldap.authenricate("admin", "jmwang") == true){
+        if(ldap.authenricate("admin", "secret") == true){
  
             System.out.println( "该用户认证成功!" ); 
  

@@ -30,13 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 		
 		//@see: http://raymondhlee.wordpress.com/tag/spring-boot/
 		@Value("${ldap.domain}")
-		private String DOMAIN;
+		private String LDAP_DOMAIN;
 		@Value("${ldap.url}")
-		private String URL;
+		private String LDAP_URL;
 		
 		@Override 
 		public void init(AuthenticationManagerBuilder auth) throws Exception{
-			LOG.info("@Value(URL):{}",URL);
+			LOG.info("@Value(URL):{}",LDAP_URL);
 //			auth.ldapAuthentication().userDnPatterns("uid={0},ou=people")
 //			.groupSearchBase("ou=groups").contextSource()
 //			.ldif("classpath:test-server.ldif");
@@ -48,9 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 //			.userDnPatterns("uid={0},ou=people")
 //			.groupSearchBase("ou=groups")
 			.contextSource()
-			.url("ldap://localhost:10389/dc=example,dc=com")
+			.url("ldap://localhost:10389")
 			.managerDn("uid=admin,ou=groups")
-			.managerPassword("dirtysecret");
+			.managerPassword("secret");
 			
 //			DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource();
 //		    contextSource.setUserDn("uid=admin,ou=system");
