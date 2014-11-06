@@ -4,10 +4,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.wordnik.swagger.annotations.ApiOperation;
+
+//@Controller
+@RestController
 @RequestMapping("x")
 @ApiVersion(1)
 public class GreetingController {
@@ -23,7 +28,9 @@ public class GreetingController {
                             String.format(template, name));
     }
     
-    @RequestMapping("a")
+    
+    @RequestMapping(method=RequestMethod.GET,value="a")
+    @ApiOperation(httpMethod = "GET", value = "Say Hello To World using Swagger")
     public @ResponseBody String a() { return "a";}         // maps to /v1/x/a
 
     @RequestMapping("b")
